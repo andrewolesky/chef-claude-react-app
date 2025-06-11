@@ -24,4 +24,6 @@ dist-ssr
 *.sw?
 
 # Custom
-vite.txt
+private/
+private/vite_install.txt
+private/hugging_face_api_key.txt
