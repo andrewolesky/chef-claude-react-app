@@ -1,14 +1,19 @@
 import { useState } from "react";
 import IngredientsList from "./IngredientsList";
-import ClaudeRecipe from "./ClaudeRecipe";
+import HFRecipe from "./HFRecipe";
+import { getRecipeFromMistral } from "./ai";
 
 export default function Main() {
-  const [ingredients, setIngredients] = useState(["milk"]);
-  const [recipeShown, setRecipeShown] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [recipe, setRecipe] = useState("");
 
-  function toggleRecipeShown() {
-    setRecipeShown((prevShown) => !prevShown);
+  async function getRecipe() {
+    // setRecipeShown((prevShown) => !prevShown);
+    const recipeMarkdown = await getRecipeFromMistral(ingredients);
+    // console.log(recipeMarkdown);
+    setRecipe(recipeMarkdown);
   }
+
   function addIngredient(formData) {
     // event.preventDefault(); // Prevents page being reloaded!
 
@@ -31,13 +36,10 @@ export default function Main() {
       </form>
 
       {ingredients.length > 0 && (
-        <IngredientsList
-          ingredientsListItems={ingredients}
-          toggleRecipeShown={toggleRecipeShown}
-        />
+        <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
       )}
 
-      {recipeShown && <ClaudeRecipe />}
+      {recipe && <HFRecipe recipe={recipe} />}
     </main>
   );
 }
