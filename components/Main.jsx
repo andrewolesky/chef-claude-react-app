@@ -7,18 +7,18 @@ export default function Main() {
     <li key={ingredient}>{ingredient}</li>
   ));
 
-  function handleSubmit(event) {
-    event.preventDefault(); // Prevents page being reloaded
-    const formData = new FormData(event.currentTarget);
+  function addIngredient(formData) {
+    // event.preventDefault(); // Prevents page being reloaded!
+
     const newIngredient = formData.get("ingredient");
     setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
-  }
 
-  console.log(useState("Hi"));
+    // event.currentTarget.reset(); // Erases input from the form.
+  }
 
   return (
     <main>
-      <form onSubmit={handleSubmit} className="add-ingredient-form">
+      <form action={addIngredient} className="add-ingredient-form">
         <input
           type="text"
           placeholder="e.g. oregano"
