@@ -2,10 +2,19 @@ import { useState } from "react";
 import IngredientsList from "./IngredientsList";
 import HFRecipe from "./HFRecipe";
 import { getRecipeFromMistral } from "./ai";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function Main() {
   const [ingredients, setIngredients] = useState([]);
   const [recipe, setRecipe] = useState("");
+  const recipeSection = useRef(null);
+
+  useEffect(() => {
+    if (recipe !== "" && recipeSection.current !== null) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [recipe]);
 
   async function getRecipe() {
     // setRecipeShown((prevShown) => !prevShown);
@@ -36,7 +45,11 @@ export default function Main() {
       </form>
 
       {ingredients.length > 0 && (
-        <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
+        <IngredientsList
+          ingredients={ingredients}
+          getRecipe={getRecipe}
+          ref={recipeSection}
+        />
       )}
 
       {recipe && <HFRecipe recipe={recipe} />}
